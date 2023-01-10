@@ -197,7 +197,7 @@ public class PublicTutorUtils {
      */
     public static <T> Context contextH3(SkipList<T> list, T key) {
         Context.Builder<?> builder = contextBuilder()
-            .subject(linkMethod("add"))
+            .subject(linkMethod("remove"))
             .add("Element to remove", key)
             .add("Before removal", contextList(list));
         list.remove(key);
