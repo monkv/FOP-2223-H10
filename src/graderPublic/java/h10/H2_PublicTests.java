@@ -338,8 +338,8 @@ public final class H2_PublicTests {
                 node.key.prev.key.value,
                 context,
                 result -> String.format("The call of the method add(%s) should add the element %s on the level %s, "
-                        + "and the predecessor node should reference to it, but given previous node %s.", key, key,
-                    level, result.object())
+                    + "and the predecessor of the successor node %s should reference to it, but given previous "
+                    + "node %s.", key, key, level, node.key.value, result.object())
             );
         }
     }
