@@ -324,9 +324,9 @@ public final class H2_PublicTests {
         SkipList<Integer> list = (SkipList<Integer>) object;
         list.setProbability(PROBABILITY_ALWAYS_ADD);
 
+        List<List<ListItem<ExpressNode<Integer>>>> itemRefs = listItemAsList(list.head);
         Context context = contextH2(list, key);
 
-        List<List<ListItem<ExpressNode<Integer>>>> itemRefs = listItemAsList(list.head);
         for (int i = 0; i < refs.length; i++) {
             int level = i;
             ListItem<ExpressNode<Integer>> node = itemRefs.get(i).get(refs[i] + 1);
