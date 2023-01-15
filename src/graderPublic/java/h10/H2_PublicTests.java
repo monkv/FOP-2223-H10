@@ -11,8 +11,13 @@ import org.tudalgo.algoutils.tutor.general.conversion.ArrayConverter;
 
 import java.util.List;
 
-import static h10.PublicTutorUtils.*;
-import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
+import static h10.PublicTutorUtils.PROBABILITY_ALWAYS_ADD;
+import static h10.PublicTutorUtils.contextH2;
+import static h10.PublicTutorUtils.copy;
+import static h10.PublicTutorUtils.listItemAsList;
+import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.assertEquals;
+import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.assertNotNull;
+import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.assertNull;
 
 /**
  * Defines the public JUnit test cases related to the task H2.
@@ -231,7 +236,8 @@ public final class H2_PublicTests {
      *         }
      *         "key": integer,
      *         "numberOfElementsLevel": array of integers,
-     *         "refs": array of integers
+     *         "refs": array of integers,
+     *         "numberOfLayers: integer
      *     }
      * }</pre>
      *
@@ -239,6 +245,7 @@ public final class H2_PublicTests {
      * @param key                   the element to add
      * @param numberOfElementsLevel the number of elements on each level
      * @param refs                  the indices of the added elements
+     * @param numberOfLayers        the number of layers
      */
     @DisplayName("10 | Methode erstellt neue Ebenen korrekt.")
     @ParameterizedTest(name = "Test {index}: Erstellen einer neuen Ebene beim Einfügen von {1}.")
@@ -247,7 +254,8 @@ public final class H2_PublicTests {
         @Property("list") @ConvertWith(SkipListConverter.class) Object object,
         @Property("key") Integer key,
         @Property("numberOfElementsLevel") @ConvertWith(ArrayConverter.Auto.class) Integer[] numberOfElementsLevel,
-        @Property("refs") @ConvertWith(ArrayConverter.Auto.class) Integer[] refs
+        @Property("refs") @ConvertWith(ArrayConverter.Auto.class) Integer[] refs,
+        @Property("numberOfLayers") int numberOfLayers
     ) {
         Probability probability = new Probability() {
             private boolean first = true;
@@ -267,31 +275,31 @@ public final class H2_PublicTests {
         Context context = contextH2(list, key);
 
         List<List<ListItem<ExpressNode<Integer>>>> itemRefs = listItemAsList(list.head);
+        assertEquals(
+            itemRefs.size(),
+            numberOfLayers,
+            context,
+            result -> String.format(
+                "The call of the method add(%s) should change the number of layers to %s, but given %s",
+                key, numberOfLayers, itemRefs.size())
+        );
         for (int i = 0; i < numberOfElementsLevel.length; i++) {
             int level = i;
             List<ListItem<ExpressNode<Integer>>> node = itemRefs.get(i);
             // Offset is 1 because of the sentinel node
             int expectedSize = numberOfElementsLevel[i] + 1;
-            int expectedAmountOfLevels = 2;
-            assertEquals(
-                itemRefs.size(),
-                expectedAmountOfLevels,
-                context,
-                result -> String.format("The call of the method add(%s) should add the element %s on  the level %s "
-                    + "and modify the amount of levels to %s, but given %s levels.", key, key, level, expectedAmountOfLevels, itemRefs.size())
-            );
             assertEquals(
                 expectedSize,
                 node.size(),
                 context,
-                result -> String.format("The call of the method add(%s) should add the element %s on  the level %s "
+                result -> String.format("The call of the method add(%s) should add the element %s on the level %s "
                     + "and level %s should contain %s elements, but it contains %s elements.", key, key, level, level, expectedSize, result.object())
             );
             assertEquals(
                 key,
                 node.get(refs[i] + 1).key.value,
                 context,
-                result -> String.format("The call of the method add(%s) should add the element %s on  the level %s, "
+                result -> String.format("The call of the method add(%s) should add the element %s on the level %s, "
                     + "but given %s.", key, key, level, result.object())
             );
         }
