@@ -47,7 +47,17 @@ public class PublicTutorUtils {
     /**
      * The probability to always add new element to the list.
      */
-    public static final Probability PROBABILITY_ALWAYS_ADD = () -> true;
+    public static final Probability PROBABILITY_ALWAYS_ADD = new Probability() {
+        @Override
+        public boolean nextBoolean() {
+            return true;
+        }
+
+        @Override
+        public String toString() {
+            return "100%";
+        }
+    };
 
     /**
      * Don't let anyone instantiate this class.

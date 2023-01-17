@@ -268,6 +268,11 @@ public final class H2_PublicTests {
                 }
                 return false;
             }
+
+            @Override
+            public String toString() {
+                return "Only add once";
+            }
         };
         SkipList<Integer> list = (SkipList<Integer>) object;
         list.setProbability(probability);
@@ -280,7 +285,7 @@ public final class H2_PublicTests {
             numberOfLevels,
             context,
             result -> String.format(
-                "The call of the method add(%s) should change the amount of levels to %s, but given %s",
+                "The call of the method add(%s) should change the number of levels to %s, but given %s",
                 key, numberOfLevels, itemRefs.size())
         );
         for (int i = 0; i < numberOfElementsLevel.length; i++) {
