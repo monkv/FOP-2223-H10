@@ -281,8 +281,8 @@ public final class H2_PublicTests {
 
         List<List<ListItem<ExpressNode<Integer>>>> itemRefs = listItemAsList(list.head);
         assertEquals(
-            itemRefs.size(),
             numberOfLevels,
+            itemRefs.size(),
             context,
             result -> String.format(
                 "The call of the method add(%s) should change the number of levels to %s, but given %s",
